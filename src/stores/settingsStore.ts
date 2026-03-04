@@ -135,16 +135,11 @@ const settingUpdaters: {
     commands.changeExperimentalEnabledSetting(value as boolean),
   show_tray_icon: (value) =>
     commands.changeShowTrayIconSetting(value as boolean),
-  wake_word_prefix: (value) =>
-    commands.setWakeWordPrefix(value as string),
-  wake_word_enabled: (value) =>
-    commands.setWakeWordEnabled(value as boolean),
-  auto_switch_model: (value) =>
-    commands.setAutoSwitchModel(value as boolean),
-  light_model_id: (value) =>
-    commands.setLightModel(value as string | null),
-  heavy_model_id: (value) =>
-    commands.setHeavyModel(value as string | null),
+  wake_word_prefix: (value) => commands.setWakeWordPrefix(value as string),
+  wake_word_enabled: (value) => commands.setWakeWordEnabled(value as boolean),
+  auto_switch_model: (value) => commands.setAutoSwitchModel(value as boolean),
+  light_model_id: (value) => commands.setLightModel(value as string | null),
+  heavy_model_id: (value) => commands.setHeavyModel(value as string | null),
   auto_switch_threshold_secs: (value) =>
     commands.setAutoSwitchThreshold(value as number),
   whisper_initial_prompt: (value) =>

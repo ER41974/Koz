@@ -5,7 +5,6 @@ use crate::managers::audio::AudioRecordingManager;
 use crate::managers::history::HistoryManager;
 use crate::managers::transcription::TranscriptionManager;
 use crate::settings::{get_settings, AppSettings, KozMode, APPLE_INTELLIGENCE_PROVIDER_ID};
-use regex::Regex;
 use crate::shortcut;
 use crate::tray::{change_tray_icon, TrayIconState};
 use crate::utils::{
@@ -15,6 +14,7 @@ use crate::TranscriptionCoordinator;
 use ferrous_opencc::{config::BuiltinConfig, OpenCC};
 use log::{debug, error, warn};
 use once_cell::sync::Lazy;
+use regex::Regex;
 use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::Instant;
@@ -125,15 +125,14 @@ async fn post_process_transcription(
         return None;
     }
 
-    let selected_prompt_id = match override_prompt_id
-        .or_else(|| settings.post_process_selected_prompt_id.clone())
-    {
-        Some(id) => id,
-        None => {
-            debug!("Post-processing skipped because no prompt is selected");
-            return None;
-        }
-    };
+    let selected_prompt_id =
+        match override_prompt_id.or_else(|| settings.post_process_selected_prompt_id.clone()) {
+            Some(id) => id,
+            None => {
+                debug!("Post-processing skipped because no prompt is selected");
+                return None;
+            }
+        };
 
     let prompt = match settings
         .post_process_prompts
@@ -471,15 +470,19 @@ impl ShortcutAction for TranscribeAction {
                 // Auto-switch model based on recording duration
                 let settings_pre = get_settings(&ah);
                 if settings_pre.auto_switch_model {
-                    let target_model = if duration_secs < settings_pre.auto_switch_threshold_secs as f32 {
-                        settings_pre.light_model_id.as_deref()
-                    } else {
-                        settings_pre.heavy_model_id.as_deref()
-                    };
+                    let target_model =
+                        if duration_secs < settings_pre.auto_switch_threshold_secs as f32 {
+                            settings_pre.light_model_id.as_deref()
+                        } else {
+                            settings_pre.heavy_model_id.as_deref()
+                        };
                     if let Some(model_id) = target_model {
                         let current = tm.get_current_model();
                         if current.as_deref() != Some(model_id) {
-                            debug!("Auto-switch: switching to model '{}' (duration={:.1}s)", model_id, duration_secs);
+                            debug!(
+                                "Auto-switch: switching to model '{}' (duration={:.1}s)",
+                                model_id, duration_secs
+                            );
                             if let Err(e) = tm.load_model(model_id) {
                                 warn!("Auto-switch: failed to load model '{}': {}", model_id, e);
                             }
@@ -511,7 +514,9 @@ impl ShortcutAction for TranscribeAction {
 
                             // Koz: Detect wake word and determine mode
                             let (should_post_process, override_prompt_id) =
-                                if let Some((cleaned, mode)) = detect_wake_word(&final_text, &settings) {
+                                if let Some((cleaned, mode)) =
+                                    detect_wake_word(&final_text, &settings)
+                                {
                                     final_text = cleaned;
                                     let needs_pp = mode.prompt_id.is_some();
                                     let pid = mode.prompt_id.clone();
@@ -531,7 +536,12 @@ impl ShortcutAction for TranscribeAction {
                                 change_tray_icon(&ah, TrayIconState::Transcribing);
                             }
                             let processed = if should_post_process {
-                                post_process_transcription(&settings, &final_text, override_prompt_id.clone()).await
+                                post_process_transcription(
+                                    &settings,
+                                    &final_text,
+                                    override_prompt_id.clone(),
+                                )
+                                .await
                             } else {
                                 None
                             };

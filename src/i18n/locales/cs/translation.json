@@ -14,7 +14,8 @@
     "postProcessing": "Následné zpracování",
     "history": "Historie",
     "debug": "Ladění",
-    "about": "O aplikaci"
+    "about": "O aplikaci",
+    "koz": "Koz"
   },
   "onboarding": {
     "subtitle": "Pro začátek vyberte model pro přepis",
