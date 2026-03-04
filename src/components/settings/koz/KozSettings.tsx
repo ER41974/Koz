@@ -52,17 +52,25 @@ const ModeRow: React.FC<{
           value={promptId ?? ""}
           onChange={(e) => setPromptId(e.target.value || null)}
         >
-          <option value="">(Pas de post-traitement)</option>
+          <option value="">{"(Pas de post-traitement)"}</option>
           {prompts.map((p) => (
             <option key={p.id} value={p.id}>
               {p.name}
             </option>
           ))}
         </select>
-        <button onClick={save} className="p-1 hover:bg-green-500/20 rounded" title="Sauvegarder">
+        <button
+          onClick={save}
+          className="p-1 hover:bg-green-500/20 rounded"
+          title="Sauvegarder"
+        >
           <Check size={16} />
         </button>
-        <button onClick={() => setEditing(false)} className="p-1 hover:bg-red-500/20 rounded" title="Annuler">
+        <button
+          onClick={() => setEditing(false)}
+          className="p-1 hover:bg-red-500/20 rounded"
+          title="Annuler"
+        >
           <X size={16} />
         </button>
       </div>
@@ -84,14 +92,23 @@ const ModeRow: React.FC<{
         </span>
         <span className="text-xs text-mid-gray/60 truncate">
           {mode.prompt_id
-            ? prompts.find((p) => p.id === mode.prompt_id)?.name ?? mode.prompt_id
+            ? (prompts.find((p) => p.id === mode.prompt_id)?.name ??
+              mode.prompt_id)
             : "(brut)"}
         </span>
       </div>
-      <button onClick={() => setEditing(true)} className="p-1 hover:bg-mid-gray/20 rounded" title="Modifier">
+      <button
+        onClick={() => setEditing(true)}
+        className="p-1 hover:bg-mid-gray/20 rounded"
+        title="Modifier"
+      >
         <Pencil size={14} />
       </button>
-      <button onClick={() => onDelete(mode.id)} className="p-1 hover:bg-red-500/20 rounded" title="Supprimer">
+      <button
+        onClick={() => onDelete(mode.id)}
+        className="p-1 hover:bg-red-500/20 rounded"
+        title="Supprimer"
+      >
         <Trash2 size={14} />
       </button>
     </div>
@@ -117,9 +134,9 @@ export const KozSettings: React.FC = () => {
   const initialPrompt = getSetting("whisper_initial_prompt") ?? "";
 
   const refresh = useCallback(async () => {
-    const { refreshSettings } = await import("../../../stores/settingsStore").then(
-      (m) => m.useSettingsStore.getState()
-    );
+    const { refreshSettings } = await import(
+      "../../../stores/settingsStore"
+    ).then((m) => m.useSettingsStore.getState());
     await refreshSettings();
     setRefreshKey((k) => k + 1);
   }, []);
@@ -139,7 +156,7 @@ export const KozSettings: React.FC = () => {
       await commands.deleteKozMode(id);
       refresh();
     },
-    [refresh]
+    [refresh],
   );
 
   return (
@@ -156,7 +173,7 @@ export const KozSettings: React.FC = () => {
           grouped={true}
         />
         <div className="flex items-center gap-3 px-4 py-3">
-          <label className="text-sm font-medium w-32">Pr\u00e9fixe</label>
+          <label className="text-sm font-medium w-32">{"Préfixe"}</label>
           <input
             className="bg-transparent border border-mid-gray/40 rounded px-3 py-1.5 text-sm flex-1"
             value={wakePrefix}
@@ -199,7 +216,7 @@ export const KozSettings: React.FC = () => {
               value={newPromptId ?? ""}
               onChange={(e) => setNewPromptId(e.target.value || null)}
             >
-              <option value="">(Pas de post-traitement)</option>
+              <option value="">{"(Pas de post-traitement)"}</option>
               {prompts.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.name}
@@ -214,7 +231,11 @@ export const KozSettings: React.FC = () => {
             >
               <Check size={16} />
             </button>
-            <button onClick={() => setAdding(false)} className="p-1 hover:bg-red-500/20 rounded" title="Annuler">
+            <button
+              onClick={() => setAdding(false)}
+              className="p-1 hover:bg-red-500/20 rounded"
+              title="Annuler"
+            >
               <X size={16} />
             </button>
           </div>
@@ -223,7 +244,7 @@ export const KozSettings: React.FC = () => {
             onClick={() => setAdding(true)}
             className="flex items-center gap-2 px-4 py-3 text-sm text-mid-gray hover:text-foreground transition-colors w-full"
           >
-            <Plus size={14} /> Ajouter un mode
+            <Plus size={14} /> {"Ajouter un mode"}
           </button>
         )}
       </SettingsGroup>
@@ -242,7 +263,9 @@ export const KozSettings: React.FC = () => {
         {autoSwitch && (
           <>
             <div className="flex items-center gap-3 px-4 py-3">
-              <label className="text-sm font-medium w-32">Seuil (sec)</label>
+              <label className="text-sm font-medium w-32">
+                {"Seuil (sec)"}
+              </label>
               <input
                 type="number"
                 className="bg-transparent border border-mid-gray/40 rounded px-3 py-1.5 text-sm w-20"
@@ -250,25 +273,36 @@ export const KozSettings: React.FC = () => {
                 min={5}
                 max={120}
                 onChange={(e) =>
-                  updateSetting("auto_switch_threshold_secs", parseInt(e.target.value) || 20)
+                  updateSetting(
+                    "auto_switch_threshold_secs",
+                    parseInt(e.target.value) || 20,
+                  )
                 }
               />
             </div>
             <div className="flex items-center gap-3 px-4 py-3">
-              <label className="text-sm font-medium w-32">Mod\u00e8le l\u00e9ger</label>
+              <label className="text-sm font-medium w-32">
+                {"Modèle léger"}
+              </label>
               <input
                 className="bg-transparent border border-mid-gray/40 rounded px-3 py-1.5 text-sm flex-1"
                 value={getSetting("light_model_id") ?? ""}
-                onChange={(e) => updateSetting("light_model_id", e.target.value || null)}
+                onChange={(e) =>
+                  updateSetting("light_model_id", e.target.value || null)
+                }
                 placeholder="(auto-d\u00e9tection)"
               />
             </div>
             <div className="flex items-center gap-3 px-4 py-3">
-              <label className="text-sm font-medium w-32">Mod\u00e8le lourd</label>
+              <label className="text-sm font-medium w-32">
+                {"Modèle lourd"}
+              </label>
               <input
                 className="bg-transparent border border-mid-gray/40 rounded px-3 py-1.5 text-sm flex-1"
                 value={getSetting("heavy_model_id") ?? ""}
-                onChange={(e) => updateSetting("heavy_model_id", e.target.value || null)}
+                onChange={(e) =>
+                  updateSetting("heavy_model_id", e.target.value || null)
+                }
                 placeholder="(auto-d\u00e9tection)"
               />
             </div>
@@ -279,15 +313,20 @@ export const KozSettings: React.FC = () => {
       {/* Whisper initial prompt */}
       <SettingsGroup title="Optimisation Whisper">
         <div className="px-4 py-3 space-y-2">
-          <label className="text-sm font-medium">Initial prompt (aide \u00e0 la langue)</label>
+          <label className="text-sm font-medium">
+            {"Initial prompt (aide à la langue)"}
+          </label>
           <p className="text-xs text-mid-gray">
-            Aide Whisper \u00e0 reconna\u00eetre les langues utilis\u00e9es. Incluez des mots dans vos langues principales.
+            {"Aide Whisper à reconnaître les langues utilisées."}
+            {"Incluez des mots dans vos langues principales."}
           </p>
           <textarea
             className="bg-transparent border border-mid-gray/40 rounded px-3 py-2 text-sm w-full resize-none"
             rows={2}
             value={initialPrompt}
-            onChange={(e) => updateSetting("whisper_initial_prompt", e.target.value)}
+            onChange={(e) =>
+              updateSetting("whisper_initial_prompt", e.target.value)
+            }
             placeholder="Bonjour, voici une phrase en fran\u00e7ais et parfois in english."
           />
         </div>

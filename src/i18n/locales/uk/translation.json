@@ -14,7 +14,8 @@
     "postProcessing": "Постобробка",
     "history": "Історія",
     "debug": "Дебаг",
-    "about": "Інфо"
+    "about": "Інфо",
+    "koz": "Koz"
   },
   "onboarding": {
     "subtitle": "Для початку оберіть модель транскрипції",
