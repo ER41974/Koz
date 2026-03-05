@@ -712,20 +712,6 @@ async updateRecordingRetentionPeriod(period: string) : Promise<Result<null, stri
     else return { status: "error", error: e  as any };
 }
 },
-/**
- * Checks if the Mac is a laptop by detecting battery presence
- * 
- * This uses pmset to check for battery information.
- * Returns true if a battery is detected (laptop), false otherwise (desktop)
- */
-async isLaptop() : Promise<Result<boolean, string>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("is_laptop") };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
 async getKozModes() : Promise<Result<KozMode[], string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_koz_modes") };
@@ -742,7 +728,7 @@ async addKozMode(id: string, name: string, wakeSuffix: string, promptId: string 
     else return { status: "error", error: e  as any };
 }
 },
-async updateKozMode(id: string, name: string | null, wakeSuffix: string | null, promptId: string | null | undefined, enabled: boolean | null) : Promise<Result<null, string>> {
+async updateKozMode(id: string, name: string | null, wakeSuffix: string | null, promptId: string | null, enabled: boolean | null) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("update_koz_mode", { id, name, wakeSuffix, promptId, enabled }) };
 } catch (e) {
@@ -758,9 +744,25 @@ async deleteKozMode(id: string) : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+async getWakeWordPrefix() : Promise<Result<string, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_wake_word_prefix") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async setWakeWordPrefix(prefix: string) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("set_wake_word_prefix", { prefix }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async getWakeWordEnabled() : Promise<Result<boolean, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_wake_word_enabled") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -806,9 +808,29 @@ async setAutoSwitchThreshold(thresholdSecs: number) : Promise<Result<null, strin
     else return { status: "error", error: e  as any };
 }
 },
+async getWhisperInitialPrompt() : Promise<Result<string, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_whisper_initial_prompt") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async setWhisperInitialPrompt(prompt: string) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("set_whisper_initial_prompt", { prompt }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Stub implementation for non-macOS platforms
+ * Always returns false since laptop detection is macOS-specific
+ */
+async isLaptop() : Promise<Result<boolean, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("is_laptop") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };

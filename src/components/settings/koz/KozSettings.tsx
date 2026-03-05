@@ -27,7 +27,7 @@ const ModeRow: React.FC<{
   }, [mode.id, name, suffix, promptId, onUpdate]);
 
   const toggleEnabled = useCallback(async () => {
-    await commands.updateKozMode(mode.id, null, null, undefined, !mode.enabled);
+    await commands.updateKozMode(mode.id, null, null, null, !mode.enabled);
     onUpdate();
   }, [mode.id, mode.enabled, onUpdate]);
 

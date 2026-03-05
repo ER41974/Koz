@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "identifier": "com.koz.app",
   "build": {
-    "beforeDevCommand": "bun run dev",
+    "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "bun run build",
+    "beforeBuildCommand": "npm run build",
     "frontendDist": "../dist"
   },
   "app": {
@@ -70,7 +70,14 @@
       }
     },
     "windows": {
-      "signCommand": ""
+      "signCommand": "",
+      "nsis": {
+        "installMode": "currentUser",
+        "installerIcon": "icons/icon.ico",
+        "startMenuFolder": "Koz",
+        "allowDowngrades": true,
+        "displayLanguageSelector": false
+      }
     }
   },
   "plugins": {
