@@ -75,7 +75,6 @@
         "installMode": "currentUser",
         "installerIcon": "icons/icon.ico",
         "startMenuFolder": "Koz",
-        "allowDowngrades": true,
         "displayLanguageSelector": false
       }
     }
